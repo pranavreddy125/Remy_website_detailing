@@ -1,0 +1,29 @@
+{
+  "services": [
+    {
+      "name": "Basic Wash",
+      "description": "A thorough exterior wash and drying of your vehicle.",
+      "price": 20
+    },
+    {
+      "name": "Interior Cleaning",
+      "description": "Complete vacuuming and cleaning of the interior surfaces.",
+      "price": 30
+    },
+    {
+      "name": "Full Detail",
+      "description": "Includes both exterior wash and interior cleaning, plus waxing.",
+      "price": 70
+    },
+    {
+      "name": "Engine Cleaning",
+      "description": "Cleaning of the engine bay to remove dirt and grime.",
+      "price": 50
+    },
+    {
+      "name": "Headlight Restoration",
+      "description": "Restoring clarity to foggy headlights for improved visibility.",
+      "price": 40
+    }
+  ]
+}

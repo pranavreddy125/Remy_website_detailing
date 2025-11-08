@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Booking — Remy Detailing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Remy Detailing</a>
+      <button class="nav-toggle" aria-label="Toggle navigation"><span class="hamburger"></span></button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="payment.html">Payment</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+      <div class="header-cta"><a class="btn signin" href="login.html">Sign In</a></div>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <section class="page-head">
+      <h1>Book a Service</h1>
+      <p class="lead">Choose service, date and time. We'll confirm shortly.</p>
+    </section>
+
+    <section class="card booking-form">
+      <form id="bookingForm">
+        <label>
+          Name
+          <input type="text" name="name" required>
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" required>
+        </label>
+        <label>
+          Service
+          <select name="service" required>
+            <option value="exterior">Exterior Detail</option>
+            <option value="interior">Interior Detail</option>
+            <option value="ceramic">Ceramic Coating</option>
+          </select>
+        </label>
+        <label>
+          Date
+          <input type="date" name="date" required>
+        </label>
+        <label>
+          Time
+          <input type="time" name="time" required>
+        </label>
+        <button class="btn primary" type="submit">Request Booking</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container"><p>&copy; <span id="year">2025</span> Remy Detailing.</p></div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
