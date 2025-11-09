@@ -1,10 +1,12 @@
 :root{
-  --bg:#ffffff;
-  --accent:#d32f2f;
-  --accent-dark:#b02727;
-  --text:#111827;
-  --muted:#6b7280;
-  --shadow: 0 10px 30px rgba(16,24,40,0.06);
+  --bg:#000000;
+  --accent:#d4af37;
+  --accent-dark:#b58c21;
+  --text:#ffffff;
+  --muted:#c5c5c5;
+  --surface:#0f0f0f;
+  --border:rgba(212,175,55,0.35);
+  --shadow: 0 10px 30px rgba(0,0,0,0.65);
   --radius:12px;
   --header-h:72px;
   font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
@@ -29,10 +31,10 @@ body{
   position:fixed;
   top:0;left:0;right:0;
   height:var(--header-h);
-  background:rgba(255,255,255,0.96);
+  background:rgba(0,0,0,0.92);
   z-index:120;
-  border-bottom:1px solid rgba(0,0,0,0.04);
-  box-shadow:0 4px 20px rgba(16,24,40,0.04);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 6px 24px rgba(0,0,0,0.55);
   backdrop-filter: blur(6px);
   display:flex;
   align-items:center;
@@ -49,7 +51,7 @@ body{
   display:inline-block;
 }
 
-/* animated red underline */
+/* animated gold underline */
 .main-nav a::after{
   content: "";
   position: absolute;
@@ -70,6 +72,7 @@ body{
   color: var(--accent);
   transform: translateY(-3px);
 }
+.main-nav a.active{color:var(--accent)}
 .main-nav a:hover::after,
 .main-nav a:focus::after,
 .main-nav a:focus-visible::after,
@@ -79,10 +82,11 @@ body{
 
 /* CTA */
 .header-cta{display:flex;align-items:center;gap:12px}
-.btn{display:inline-block;padding:9px 14px;border-radius:10px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:all .16s ease;font-weight:600}
-.btn.primary{background:var(--accent);color:#fff;box-shadow:var(--shadow)}
-.btn.primary:hover{background:var(--accent-dark);transform:translateY(-3px)}
-.btn.signin{background:transparent;color:var(--accent);border:1px solid rgba(211,47,47,0.10);padding:8px 12px}
+.btn{display:inline-block;padding:9px 14px;border-radius:10px;text-decoration:none;border:1px solid var(--border);cursor:pointer;transition:all .16s ease;font-weight:600;color:var(--text);background:transparent}
+.btn.primary{background:var(--accent);color:#0f0f0f;box-shadow:var(--shadow);border-color:var(--accent)}
+.btn.primary:hover{background:var(--accent-dark);transform:translateY(-3px);color:#000}
+.btn.signin{background:transparent;color:var(--accent);border:1px solid var(--border);padding:8px 12px}
+.btn.signin:hover{background:rgba(212,175,55,0.12)}
 
 /* Hamburger (mobile) */
 .nav-toggle{display:none;background:none;border:0;padding:8px;cursor:pointer}
@@ -105,22 +109,25 @@ body{
 
 /* Cards & grids */
 .about-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:24px 0}
-.card{background:#fff;padding:22px;border-radius:var(--radius);box-shadow:var(--shadow)}
+.card{background:var(--surface);color:var(--text);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
 .services-preview .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:16px}
-.service-card{background:#fff;padding:18px;border-radius:12px;box-shadow:var(--shadow)}
+.service-card{background:var(--surface);color:var(--text);padding:18px;border-radius:12px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.testimonials{margin-top:32px}
+.testimonials .testimonial + .testimonial{margin-top:20px}
+.testimonials .stars{display:inline-block;margin-bottom:8px;color:var(--accent)}
 
 /* Forms */
 .contact-grid{display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start}
-.contact-form, .payment-form{background:#fff;padding:20px;border-radius:12px;box-shadow:var(--shadow)}
-.contact-form label, .payment-form label{display:block;font-size:.95rem;color:var(--muted);margin-bottom:10px}
-.contact-form input, .contact-form textarea, .payment-form input, .booking-form input, .booking-form select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e7ea;margin-top:6px}
+.contact-form, .payment-form{background:var(--surface);color:var(--text);padding:20px;border-radius:12px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.contact-form label, .payment-form label{display:block;font-size:.95rem;color:var(--text);margin-bottom:10px}
+.contact-form input, .contact-form textarea, .payment-form input, .booking-form input, .booking-form select{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:#050505;color:var(--text);margin-top:6px}
 
 /* Auth */
 .auth-page{display:flex;align-items:center;justify-content:center;padding:80px 20px}
-.auth-card{width:100%;max-width:420px;background:#fff;padding:28px;border-radius:12px;box-shadow:var(--shadow);text-align:left}
+.auth-card{width:100%;max-width:420px;background:var(--surface);color:var(--text);padding:28px;border-radius:12px;box-shadow:var(--shadow);text-align:left;border:1px solid var(--border)}
 
 /* Footer */
-.site-footer{padding:28px 0;border-top:1px solid rgba(0,0,0,0.04);margin-top:48px;text-align:center;color:var(--muted)}
+.site-footer{padding:28px 0;border-top:1px solid var(--border);margin-top:48px;text-align:center;color:var(--muted)}
 
 /* Utility */
 .row{display:flex;gap:12px}
@@ -134,7 +141,7 @@ body{
 }
 @media (max-width:720px){
   .nav-toggle{display:block}
-  .main-nav{display:none;position:absolute;top:var(--header-h);left:0;right:0;background:var(--bg);padding:12px;border-top:1px solid rgba(0,0,0,0.04)}
+  .main-nav{display:none;position:absolute;top:var(--header-h);left:0;right:0;background:rgba(0,0,0,0.98);padding:12px;border-top:1px solid var(--border)}
   .main-nav ul{flex-direction:column;gap:8px}
   .header-cta{display:none}
   .hero-content{margin-top:-90px;padding:30px}
