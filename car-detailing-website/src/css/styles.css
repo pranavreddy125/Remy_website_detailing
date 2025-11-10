@@ -115,6 +115,45 @@ body{
 .testimonials{margin-top:32px}
 .testimonials .testimonial + .testimonial{margin-top:20px}
 .testimonials .stars{display:inline-block;margin-bottom:8px;color:var(--accent)}
+.mobile-faq{margin:32px 0}
+.mobile-faq .faq-card{padding:0}
+.mobile-faq .faq-card h2{margin:0;padding:24px 24px 12px}
+.accordion{border-top:1px solid var(--border)}
+.accordion-item{border-bottom:1px solid var(--border)}
+.accordion-toggle{
+  width:100%;
+  background:transparent;
+  color:var(--text);
+  font-size:1rem;
+  font-weight:600;
+  border:0;
+  padding:18px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  cursor:pointer;
+  text-align:left;
+}
+.accordion-toggle span:first-child{transition:color .18s ease}
+.accordion-toggle:hover span:first-child{color:var(--accent)}
+.accordion-toggle .chevron{
+  width:12px;
+  height:12px;
+  border-right:2px solid var(--accent);
+  border-bottom:2px solid var(--accent);
+  transform:rotate(45deg);
+  transition:transform .2s ease;
+}
+.accordion-item.open .accordion-toggle .chevron{transform:rotate(-135deg)}
+.accordion-panel{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .3s ease;
+  padding:0 24px;
+  background:#050505;
+}
+.accordion-panel p{margin:0;padding:0 0 18px;color:var(--text)}
 
 /* Forms */
 .contact-grid{display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start}

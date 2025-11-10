@@ -51,6 +51,50 @@
           </div>
       </section>
 
+      <section class="mobile-faq">
+          <div class="card faq-card">
+              <h2>Mobile Detailing Answers</h2>
+              <div class="accordion">
+                  <article class="accordion-item">
+                      <button class="accordion-toggle" type="button" aria-expanded="false">
+                          <span>What services does Desert Shine Detailing offer?</span>
+                          <span class="chevron" aria-hidden="true"></span>
+                      </button>
+                      <div class="accordion-panel">
+                          <p>We offer interior and exterior detailing, paint polishing, ceramic coating, and maintenance washes.</p>
+                      </div>
+                  </article>
+                  <article class="accordion-item">
+                      <button class="accordion-toggle" type="button" aria-expanded="false">
+                          <span>How can I schedule a detailing appointment?</span>
+                          <span class="chevron" aria-hidden="true"></span>
+                      </button>
+                      <div class="accordion-panel">
+                          <p>Appointments can be booked directly through our website’s booking page.</p>
+                      </div>
+                  </article>
+                  <article class="accordion-item">
+                      <button class="accordion-toggle" type="button" aria-expanded="false">
+                          <span>Can you provide mobile car detailing services in my area?</span>
+                          <span class="chevron" aria-hidden="true"></span>
+                      </button>
+                      <div class="accordion-panel">
+                          <p>Yes! We travel to most locations within the Wichita metro area. Just include your address when booking.</p>
+                      </div>
+                  </article>
+                  <article class="accordion-item">
+                      <button class="accordion-toggle" type="button" aria-expanded="false">
+                          <span>What products do you use?</span>
+                          <span class="chevron" aria-hidden="true"></span>
+                      </button>
+                      <div class="accordion-panel">
+                          <p>We use premium, eco-friendly products from Meguiar’s and Chemical Guys to ensure quality results.</p>
+                      </div>
+                  </article>
+              </div>
+          </div>
+      </section>
+
       <section class="testimonials">
           <h2>Customer Testimonials</h2>
           <div class="testimonial">
@@ -84,5 +128,23 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggles = document.querySelectorAll('.accordion-toggle');
+      toggles.forEach(toggle => {
+        const panel = toggle.nextElementSibling;
+        toggle.addEventListener('click', () => {
+          const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+          toggle.setAttribute('aria-expanded', (!isOpen).toString());
+          toggle.closest('.accordion-item').classList.toggle('open', !isOpen);
+          if (!isOpen) {
+            panel.style.maxHeight = panel.scrollHeight + 'px';
+          } else {
+            panel.style.maxHeight = 0;
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
