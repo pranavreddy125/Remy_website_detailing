@@ -40,7 +40,9 @@
         <label for="phone">Phone Number:</label>
         <input type="tel" id="phone" name="phone" required>
 
-        <label for="service">Select Service:</label>
+        <label for="service">Select Service:
+          <a class="info-link" href="services.html" aria-label="View service details">i</a>
+        </label>
         <select id="service" name="service" required>
           <option value="">--Choose--</option>
           <option>Interior Detail</option>
@@ -49,13 +51,19 @@
         </select>
 
         <label for="date">Date:</label>
-        <input type="date" id="date" name="date" required>
+        <input type="date" id="date" name="date" required inputmode="none">
 
         <label for="time">Time:</label>
-        <input type="time" id="time" name="time" required>
+        <div class="time-row">
+          <input type="time" id="time" name="time" required>
+          <div class="ampm-toggle" role="group" aria-label="Select AM or PM">
+            <button type="button" class="active" data-period="AM">AM</button>
+            <button type="button" data-period="PM">PM</button>
+          </div>
+        </div>
 
         <label for="notes">Notes (optional):</label>
-        <textarea id="notes" name="notes" rows="3" placeholder="Additional information..."></textarea>
+        <textarea id="notes" name="notes" rows="3"></textarea>
 
         <button type="submit">Book Appointment</button>
       </form>
@@ -68,9 +76,60 @@
     </div>
   </footer>
 
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
   <script src="js/main.js"></script>
   <script>
   const scriptURL = "https://script.google.com/macros/s/AKfycbyUIXPQmX6RDVx--mLqpFcBmTvHu83OkiYaa_sXpF_-3VronnfcmFqVItJlyzOc8ahhQg/exec";
+  const toastEl = document.getElementById("toast");
+  const dateField = document.getElementById("date");
+  const timeField = document.getElementById("time");
+  const periodButtons = document.querySelectorAll(".ampm-toggle button");
+  const pad = value => String(value).padStart(2,"0");
+
+  const setPeriod = (period, adjustValue) => {
+    periodButtons.forEach(btn => {
+      const isActive = btn.dataset.period === period;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+    timeField.dataset.period = period;
+
+    if(adjustValue && timeField.value){
+      let [hours, minutes] = timeField.value.split(":").map(Number);
+      if(period === "AM" && hours >= 12){
+        hours = hours === 12 ? 0 : hours - 12;
+      }else if(period === "PM" && hours < 12){
+        hours = hours === 0 ? 12 : hours + 12;
+      }
+      timeField.value = `${pad(hours)}:${pad(minutes ?? 0)}`;
+    }
+  };
+
+  const syncPeriodFromTime = () => {
+    if(!timeField.value) return;
+    const hours = Number(timeField.value.split(":")[0]);
+    setPeriod(hours >= 12 ? "PM" : "AM", false);
+  };
+
+  periodButtons.forEach(btn => {
+    btn.setAttribute("aria-pressed", btn.classList.contains("active") ? "true" : "false");
+    btn.addEventListener("click", () => setPeriod(btn.dataset.period, true));
+  });
+
+  timeField.addEventListener("change", syncPeriodFromTime);
+  timeField.addEventListener("input", syncPeriodFromTime);
+
+  dateField.addEventListener("keydown", e => e.preventDefault());
+  dateField.addEventListener("keypress", e => e.preventDefault());
+  dateField.addEventListener("paste", e => e.preventDefault());
+  setPeriod("AM", false);
+  const showToast = message => {
+    toastEl.textContent = message;
+    toastEl.classList.add("visible");
+    setTimeout(() => toastEl.classList.remove("visible"), 3000);
+  };
+
   document.getElementById("bookingForm").addEventListener("submit", e => {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.target));
@@ -78,8 +137,8 @@
       method: "POST",
       body: JSON.stringify(formData)
     })
-    .then(() => alert("Booking submitted!"))
-    .catch(err => alert("Error: " + err.message));
+    .then(() => showToast("Booking requested! We'll confirm via email."))
+    .catch(err => showToast("Something went wrong. Please try again."));
   });
   </script>
 </body>

@@ -121,6 +121,53 @@ body{
 .contact-form, .payment-form{background:var(--surface);color:var(--text);padding:20px;border-radius:12px;box-shadow:var(--shadow);border:1px solid var(--border)}
 .contact-form label, .payment-form label{display:block;font-size:.95rem;color:var(--text);margin-bottom:10px}
 .contact-form input, .contact-form textarea, .payment-form input, .booking-form input, .booking-form select{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:#050505;color:var(--text);margin-top:6px}
+.booking-form{max-width:640px;margin:0 auto}
+.booking-form form{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;border:1px solid var(--border)}
+.booking-form label{display:block;color:var(--text);font-size:.95rem;margin-top:18px;font-weight:500}
+.booking-form label:first-of-type{margin-top:0}
+.booking-form .time-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:6px}
+.booking-form input[type="time"]{flex:1 1 180px;min-width:180px}
+.booking-form .ampm-toggle{display:flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:#050505}
+.booking-form .ampm-toggle button{font-family:inherit;font-weight:600;font-size:.95rem;padding:10px 22px;border:0;background:transparent;color:var(--muted);cursor:pointer;transition:background .18s ease,color .18s ease}
+.booking-form .ampm-toggle button + button{border-left:1px solid var(--border)}
+.booking-form .ampm-toggle button.active{background:var(--accent);color:#0f0f0f}
+.booking-form .ampm-toggle button:focus-visible{outline:2px solid var(--accent-dark);outline-offset:2px}
+.booking-form .info-link{display:inline-flex;width:20px;height:20px;border-radius:50%;border:1px solid var(--accent);color:var(--accent);align-items:center;justify-content:center;font-size:.75rem;font-weight:600;margin-left:6px;text-decoration:none;transition:background .18s ease,color .18s ease}
+.booking-form .info-link:hover{background:var(--accent);color:#000}
+.booking-form input[type="date"],
+.booking-form input[type="time"],
+.booking-form select{font-family:inherit}
+.booking-form input[type="time"]{
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:textfield;
+}
+.booking-form input[type="time"]::-webkit-datetime-edit-ampm-field{display:none}
+.booking-form input[type="time"]::-moz-time-am-pm-field{display:none}
+.booking-form textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--accent);background:#050505;color:var(--text);margin-top:6px;margin-bottom:18px;resize:vertical;min-height:120px}
+.booking-form textarea::placeholder{color:var(--muted)}
+.booking-form button[type="submit"]{display:block;width:100%;max-width:340px;margin:30px auto 0;padding:14px 20px;border-radius:999px;border:1px solid var(--accent);background:var(--accent);color:#0f0f0f;font-size:1.05rem;font-weight:700;cursor:pointer;transition:transform .18s ease,background .18s ease,color .18s ease}
+.booking-form button[type="submit"]:hover{background:var(--accent-dark);color:#fff;transform:translateY(-2px)}
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:40px;
+  transform:translate(-50%,20px);
+  background:var(--accent);
+  color:#000000;
+  padding:14px 22px;
+  border-radius:999px;
+  font-weight:600;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease, transform .3s ease;
+  box-shadow:0 10px 30px rgba(0,0,0,0.45);
+  z-index:200;
+}
+.toast.visible{
+  opacity:1;
+  transform:translate(-50%,0);
+}
 
 /* Auth */
 .auth-page{display:flex;align-items:center;justify-content:center;padding:80px 20px}
