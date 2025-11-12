@@ -51,53 +51,46 @@
         </select>
 
         <label for="date">Date:</label>
-        <input type="date" id="date" name="date" required inputmode="none">
-        <div class="date-shortcuts" role="group" aria-label="Quick date selection">
-          <button type="button" data-date-offset="0">Today</button>
-          <button type="button" data-date-offset="1">Tomorrow</button>
-          <button type="button" data-date-weekend="true">This Weekend</button>
+        <div class="date-input-row">
+          <input type="date" id="date" name="date" class="date-field" required inputmode="none">
+          <button type="button" class="calendar-btn" aria-label="Open calendar picker">Calendar</button>
         </div>
 
-        <label for="timeHour">Preferred Time:</label>
+        <label>Preferred Time:</label>
         <div class="time-row time-picker">
-          <div class="time-selects">
-            <select id="timeHour" aria-label="Hour" required>
-              <option value="">HH</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-            </select>
-            <span class="colon">:</span>
-            <select id="timeMinute" aria-label="Minutes" required>
-              <option value="">MM</option>
-              <option value="0">00</option>
-              <option value="5">05</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="20">20</option>
-              <option value="25">25</option>
-              <option value="30">30</option>
-              <option value="35">35</option>
-              <option value="40">40</option>
-              <option value="45">45</option>
-              <option value="50">50</option>
-              <option value="55">55</option>
-            </select>
+          <div class="time-input-wrapper">
+            <input type="text" id="timeDisplay" class="time-display" placeholder="Select time" readonly required>
+            <div class="time-dropdowns" id="timeDropdowns" aria-hidden="true">
+              <select id="timeHourSelect" aria-label="Select hour">
+                <option value="">Hour</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+              </select>
+              <select id="timeMinuteSelect" aria-label="Select minutes">
+                <option value="">Minutes</option>
+                <option value="00">:00</option>
+                <option value="15">:15</option>
+                <option value="30">:30</option>
+                <option value="45">:45</option>
+              </select>
+            </div>
           </div>
           <div class="ampm-toggle" role="group" aria-label="Select AM or PM">
             <button type="button" class="active" data-period="AM">AM</button>
             <button type="button" data-period="PM">PM</button>
           </div>
-          <input type="hidden" id="time" name="time" required>
+          <input type="hidden" id="time" name="time">
         </div>
 
         <label for="notes">Notes (optional):</label>
@@ -122,23 +115,30 @@
   const toastEl = document.getElementById("toast");
   const dateField = document.getElementById("date");
   const timeField = document.getElementById("time");
-  const hourSelect = document.getElementById("timeHour");
-  const minuteSelect = document.getElementById("timeMinute");
+  const timeDisplay = document.getElementById("timeDisplay");
+  const hourSelect = document.getElementById("timeHourSelect");
+  const minuteSelect = document.getElementById("timeMinuteSelect");
+  const timeDropdowns = document.getElementById("timeDropdowns");
+  const timeInputWrapper = document.querySelector(".time-input-wrapper");
   const periodButtons = document.querySelectorAll(".ampm-toggle button");
-  const dateShortcuts = document.querySelectorAll(".date-shortcuts button");
+  const calendarButton = document.querySelector(".calendar-btn");
   const pad = value => String(value).padStart(2,"0");
+  let dropdownOpen = false;
+
   const updateTimeValue = () => {
-    const hourVal = parseInt(hourSelect.value, 10);
-    const minuteVal = parseInt(minuteSelect.value, 10);
-    if (Number.isNaN(hourVal) || Number.isNaN(minuteVal)) {
+    if(!hourSelect.value || !minuteSelect.value){
+      timeDisplay.value = "";
       timeField.value = "";
-      return;
+      return false;
     }
-    let hours24 = hourVal % 12;
-    if ((timeField.dataset.period || "AM") === "PM") {
+    const displayValue = `${hourSelect.value}:${minuteSelect.value}`;
+    timeDisplay.value = displayValue;
+    let hours24 = parseInt(hourSelect.value, 10) % 12;
+    if((timeField.dataset.period || "AM") === "PM"){
       hours24 += 12;
     }
-    timeField.value = `${pad(hours24)}:${pad(minuteVal)}`;
+    timeField.value = `${pad(hours24)}:${minuteSelect.value}`;
+    return true;
   };
 
   const setPeriod = (period) => {
@@ -156,31 +156,49 @@
     btn.addEventListener("click", () => setPeriod(btn.dataset.period));
   });
 
-  hourSelect.addEventListener("change", updateTimeValue);
-  minuteSelect.addEventListener("change", updateTimeValue);
+  const openDropdowns = () => {
+    dropdownOpen = true;
+    timeDropdowns.classList.add("visible");
+    timeDropdowns.setAttribute("aria-hidden", "false");
+  };
+  const closeDropdowns = () => {
+    dropdownOpen = false;
+    timeDropdowns.classList.remove("visible");
+    timeDropdowns.setAttribute("aria-hidden", "true");
+  };
+
+  timeDisplay.addEventListener("focus", openDropdowns);
+  timeDisplay.addEventListener("click", () => {
+    if(!dropdownOpen) openDropdowns();
+  });
+
+  hourSelect.addEventListener("change", () => {
+    updateTimeValue();
+    if(hourSelect.value && minuteSelect.value) closeDropdowns();
+  });
+  minuteSelect.addEventListener("change", () => {
+    updateTimeValue();
+    if(hourSelect.value && minuteSelect.value) closeDropdowns();
+  });
+
+  document.addEventListener("click", event => {
+    if(!timeInputWrapper.contains(event.target)){
+      closeDropdowns();
+    }
+  });
 
   dateField.addEventListener("keydown", e => e.preventDefault());
   dateField.addEventListener("keypress", e => e.preventDefault());
   dateField.addEventListener("paste", e => e.preventDefault());
-  const applyDateOffset = offset => {
-    const base = new Date();
-    base.setHours(0,0,0,0);
-    base.setDate(base.getDate() + offset);
-    dateField.value = base.toISOString().split("T")[0];
-  };
-  const applyWeekendShortcut = () => {
-    const today = new Date();
-    const day = today.getDay();
-    const offset = (6 - day + 7) % 7;
-    applyDateOffset(offset);
-  };
-  dateShortcuts.forEach(btn => {
-    if(btn.dataset.dateOffset){
-      btn.addEventListener("click", () => applyDateOffset(Number(btn.dataset.dateOffset)));
-    }else if(btn.dataset.dateWeekend){
-      btn.addEventListener("click", applyWeekendShortcut);
-    }
-  });
+  if(calendarButton){
+    calendarButton.addEventListener("click", () => {
+      if(typeof dateField.showPicker === "function"){
+        dateField.showPicker();
+      }else{
+        dateField.focus();
+      }
+    });
+  }
   setPeriod("AM");
   const showToast = message => {
     toastEl.textContent = message;
@@ -188,26 +206,40 @@
     setTimeout(() => toastEl.classList.remove("visible"), 3000);
   };
 
-  document.getElementById("bookingForm").addEventListener("submit", e => {
+  const bookingForm = document.getElementById("bookingForm");
+  bookingForm.addEventListener("submit", e => {
     e.preventDefault();
-    updateTimeValue();
+    const hasValidTime = updateTimeValue();
 
-    if (!timeField.value) {
-      showToast("Please select a time to continue.");
-      hourSelect.focus();
+    if (!hasValidTime) {
+      showToast("Select an hour and minutes to continue.");
+      return;
+    }
+
+    if (!bookingForm.checkValidity()) {
+      bookingForm.reportValidity();
       return;
     }
 
     // Use URL-encoded form data for universal browser support
-    const formData = new FormData(e.target);
+    const formData = new FormData(bookingForm);
     const payload = new URLSearchParams(formData);
 
     fetch(scriptURL, {
-      method: "POST",
-      body: payload // Sends as application/x-www-form-urlencoded
+    method: "POST",
+    body: payload
     })
-    .then(() => showToast("Booking requested! We'll confirm via email."))
-    .catch(() => showToast("Something went wrong. Please try again."));
+      .then(async res => {
+        const text = await res.text();
+        if (text.includes("unavailable")) {
+          showToast("That time is already taken — please choose another slot.");
+        } else if (text.includes("confirmed")) {
+          showToast("Booking confirmed! We'll email your confirmation soon.");
+        } else {
+          showToast(text || "Booking received.");
+        }
+      })
+      .catch(() => showToast("Something went wrong. Please try again."));
   });
   </script>
 </body>

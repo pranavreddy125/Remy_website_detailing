@@ -165,66 +165,91 @@ body{
 .booking-form label{display:block;color:var(--text);font-size:.95rem;margin-top:18px;font-weight:500}
 .booking-form label:first-of-type{margin-top:0}
 .booking-form .time-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:6px}
-.booking-form .time-picker{gap:18px}
-.booking-form .time-selects{
+.booking-form .time-picker{gap:18px;flex-wrap:wrap}
+.booking-form .time-input-wrapper{
+  position:relative;
+  flex:1 1 240px;
+  min-width:220px;
+}
+.booking-form .time-display{
+  width:100%;
+  padding:12px 16px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#050505;
+  color:var(--text);
+  font-size:1rem;
+  cursor:pointer;
+}
+.booking-form .time-display::placeholder{color:var(--muted)}
+.time-dropdowns{
+  position:absolute;
+  top:calc(100% + 8px);
+  left:0;
   display:flex;
-  align-items:center;
-  gap:6px;
+  gap:10px;
   background:#050505;
   border:1px solid var(--border);
-  border-radius:999px;
-  padding:6px 14px;
+  border-radius:12px;
+  padding:12px;
+  box-shadow:var(--shadow);
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(6px);
+  transition:opacity .18s ease, transform .18s ease;
+  z-index:90;
 }
-.booking-form .time-selects select{
-  background:transparent;
-  border:0;
+.time-dropdowns.visible{
+  opacity:1;
+  pointer-events:auto;
+  transform:none;
+}
+.time-dropdowns select{
+  background:#0f0f0f;
+  border:1px solid var(--border);
   color:var(--text);
   font-weight:600;
-  font-size:1.05rem;
-  appearance:none;
-  -webkit-appearance:none;
-  padding:6px 4px;
-  min-width:64px;
-}
-.booking-form .time-selects select:focus-visible{
-  outline:2px solid var(--accent);
-  border-radius:6px;
-}
-.booking-form .time-selects .colon{
-  font-weight:700;
-  color:var(--muted);
+  border-radius:8px;
+  padding:8px 14px;
+  font-size:1rem;
 }
 .booking-form .ampm-toggle{display:flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:#050505}
-.booking-form .ampm-toggle button{font-family:inherit;font-weight:600;font-size:.95rem;padding:10px 22px;border:0;background:transparent;color:var(--muted);cursor:pointer;transition:background .18s ease,color .18s ease}
+.booking-form .ampm-toggle button{font-family:inherit;font-weight:600;font-size:1rem;padding:10px 22px;border:0;background:transparent;color:var(--muted);cursor:pointer;transition:background .18s ease,color .18s ease}
 .booking-form .ampm-toggle button + button{border-left:1px solid var(--border)}
 .booking-form .ampm-toggle button.active{background:var(--accent);color:#0f0f0f}
 .booking-form .ampm-toggle button:focus-visible{outline:2px solid var(--accent-dark);outline-offset:2px}
 .booking-form .info-link{display:inline-flex;width:20px;height:20px;border-radius:50%;border:1px solid var(--accent);color:var(--accent);align-items:center;justify-content:center;font-size:.75rem;font-weight:600;margin-left:6px;text-decoration:none;transition:background .18s ease,color .18s ease}
 .booking-form .info-link:hover{background:var(--accent);color:#000}
 .booking-form input[type="date"],
-.booking-form .time-selects select,
 .booking-form select{font-family:inherit}
-.date-shortcuts{
+.date-input-row{
   display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:10px;
+  gap:12px;
+  align-items:center;
+  margin-top:6px;
+  justify-content:space-between;
 }
-.date-shortcuts button{
-  border:1px solid var(--border);
-  background:#050505;
-  color:var(--muted);
-  padding:6px 14px;
-  border-radius:999px;
+.calendar-btn{
+  border:1px solid var(--accent);
+  background:var(--accent);
+  color:#0f0f0f;
   font-weight:600;
+  font-size:1rem;
+  padding:10px 18px;
+  border-radius:10px;
   cursor:pointer;
-  transition:background .18s ease,color .18s ease;
+  transition:background .18s ease, transform .18s ease;
+  box-shadow:var(--shadow);
 }
-.date-shortcuts button:hover,
-.date-shortcuts button:focus-visible{
-  background:rgba(212,175,55,0.15);
-  color:var(--accent);
+.calendar-btn:hover,
+.calendar-btn:focus-visible{
+  background:var(--accent-dark);
+  transform:translateY(-2px);
   outline:none;
+}
+.date-field{
+  flex:1;
+  min-width:200px;
 }
 .booking-form textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--accent);background:#050505;color:var(--text);margin-top:6px;margin-bottom:18px;resize:vertical;min-height:120px}
 .booking-form textarea::placeholder{color:var(--muted)}
