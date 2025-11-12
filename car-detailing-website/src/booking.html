@@ -191,18 +191,23 @@
   document.getElementById("bookingForm").addEventListener("submit", e => {
     e.preventDefault();
     updateTimeValue();
-    if(!timeField.value){
+
+    if (!timeField.value) {
       showToast("Please select a time to continue.");
       hourSelect.focus();
       return;
     }
-    const formData = Object.fromEntries(new FormData(e.target));
+
+    // Use URL-encoded form data for universal browser support
+    const formData = new FormData(e.target);
+    const payload = new URLSearchParams(formData);
+
     fetch(scriptURL, {
       method: "POST",
-      body: JSON.stringify(formData)
+      body: payload // Sends as application/x-www-form-urlencoded
     })
     .then(() => showToast("Booking requested! We'll confirm via email."))
-    .catch(err => showToast("Something went wrong. Please try again."));
+    .catch(() => showToast("Something went wrong. Please try again."));
   });
   </script>
 </body>
