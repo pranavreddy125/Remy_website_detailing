@@ -165,7 +165,35 @@ body{
 .booking-form label{display:block;color:var(--text);font-size:.95rem;margin-top:18px;font-weight:500}
 .booking-form label:first-of-type{margin-top:0}
 .booking-form .time-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:6px}
-.booking-form input[type="time"]{flex:1 1 180px;min-width:180px}
+.booking-form .time-picker{gap:18px}
+.booking-form .time-selects{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  background:#050505;
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:6px 14px;
+}
+.booking-form .time-selects select{
+  background:transparent;
+  border:0;
+  color:var(--text);
+  font-weight:600;
+  font-size:1.05rem;
+  appearance:none;
+  -webkit-appearance:none;
+  padding:6px 4px;
+  min-width:64px;
+}
+.booking-form .time-selects select:focus-visible{
+  outline:2px solid var(--accent);
+  border-radius:6px;
+}
+.booking-form .time-selects .colon{
+  font-weight:700;
+  color:var(--muted);
+}
 .booking-form .ampm-toggle{display:flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:#050505}
 .booking-form .ampm-toggle button{font-family:inherit;font-weight:600;font-size:.95rem;padding:10px 22px;border:0;background:transparent;color:var(--muted);cursor:pointer;transition:background .18s ease,color .18s ease}
 .booking-form .ampm-toggle button + button{border-left:1px solid var(--border)}
@@ -174,15 +202,30 @@ body{
 .booking-form .info-link{display:inline-flex;width:20px;height:20px;border-radius:50%;border:1px solid var(--accent);color:var(--accent);align-items:center;justify-content:center;font-size:.75rem;font-weight:600;margin-left:6px;text-decoration:none;transition:background .18s ease,color .18s ease}
 .booking-form .info-link:hover{background:var(--accent);color:#000}
 .booking-form input[type="date"],
-.booking-form input[type="time"],
+.booking-form .time-selects select,
 .booking-form select{font-family:inherit}
-.booking-form input[type="time"]{
-  appearance:none;
-  -webkit-appearance:none;
-  -moz-appearance:textfield;
+.date-shortcuts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:10px;
 }
-.booking-form input[type="time"]::-webkit-datetime-edit-ampm-field{display:none}
-.booking-form input[type="time"]::-moz-time-am-pm-field{display:none}
+.date-shortcuts button{
+  border:1px solid var(--border);
+  background:#050505;
+  color:var(--muted);
+  padding:6px 14px;
+  border-radius:999px;
+  font-weight:600;
+  cursor:pointer;
+  transition:background .18s ease,color .18s ease;
+}
+.date-shortcuts button:hover,
+.date-shortcuts button:focus-visible{
+  background:rgba(212,175,55,0.15);
+  color:var(--accent);
+  outline:none;
+}
 .booking-form textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--accent);background:#050505;color:var(--text);margin-top:6px;margin-bottom:18px;resize:vertical;min-height:120px}
 .booking-form textarea::placeholder{color:var(--muted)}
 .booking-form button[type="submit"]{display:block;width:100%;max-width:340px;margin:30px auto 0;padding:14px 20px;border-radius:999px;border:1px solid var(--accent);background:var(--accent);color:#0f0f0f;font-size:1.05rem;font-weight:700;cursor:pointer;transition:transform .18s ease,background .18s ease,color .18s ease}
@@ -207,10 +250,48 @@ body{
   opacity:1;
   transform:translate(-50%,0);
 }
+.toast.error{
+  background:#ffdad6;
+  color:#2b0d0d;
+  box-shadow:0 10px 30px rgba(0,0,0,0.65);
+}
 
 /* Auth */
 .auth-page{display:flex;align-items:center;justify-content:center;padding:80px 20px}
 .auth-card{width:100%;max-width:420px;background:var(--surface);color:var(--text);padding:28px;border-radius:12px;box-shadow:var(--shadow);text-align:left;border:1px solid var(--border)}
+.auth-form{display:flex;flex-direction:column;gap:16px;margin-top:20px}
+.auth-form label{font-weight:600;color:var(--text)}
+.auth-form input{
+  width:100%;
+  padding:14px 18px;
+  border-radius:999px;
+  border:1px solid var(--accent);
+  background:#050505;
+  color:var(--text);
+  font-size:1rem;
+}
+.auth-form button{
+  margin-top:6px;
+  padding:15px 20px;
+  border-radius:999px;
+  border:1px solid var(--accent);
+  background:var(--accent);
+  color:#0f0f0f;
+  font-size:1.05rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform .18s ease, background .18s ease;
+  box-shadow:var(--shadow);
+}
+.auth-form button:hover:not(:disabled){
+  background:var(--accent-dark);
+  transform:translateY(-2px);
+}
+.auth-form button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+.auth-card .muted{margin-top:18px;text-align:center}
 
 /* Footer */
 .site-footer{padding:28px 0;border-top:1px solid var(--border);margin-top:48px;text-align:center;color:var(--muted)}

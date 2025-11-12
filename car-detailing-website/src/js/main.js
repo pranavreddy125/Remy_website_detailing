@@ -16,8 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const forms = {
     contact: document.getElementById('contactForm'),
     booking: document.getElementById('bookingForm'),
-    payment: document.getElementById('paymentForm'),
-    login: document.getElementById('loginForm')
+    payment: document.getElementById('paymentForm')
   };
 
   if (forms.contact) {
@@ -40,14 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       alert('Payment processed (demo). Thank you.');
       forms.payment.reset();
-      location.href = 'index.html';
-    });
-  }
-  if (forms.login) {
-    forms.login.addEventListener('submit', e => {
-      e.preventDefault();
-      alert('Signed in (demo).');
-      forms.login.reset();
       location.href = 'index.html';
     });
   }

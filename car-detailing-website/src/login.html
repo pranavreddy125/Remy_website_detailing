@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Desert Shine Detailing — Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Desert Shine Detailing</a>
+
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span class="hamburger"></span>
+      </button>
+
+      <nav class="main-nav" aria-label="Primary navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="payment.html">Payment</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="booking.html">Booking</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-cta">
+        <a class="btn signin" href="login.html">Sign In</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-page">
+    <section class="auth-card">
+      <h1>Sign in to Desert Shine</h1>
+      <p class="muted">Unlock loyalty rewards, saved vehicles, and faster booking with your mobile number.</p>
+
+      <form id="loginForm" class="auth-form" autocomplete="tel">
+        <label for="phone">Phone Number</label>
+        <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. (555) 123-4567" required>
+        <button type="submit">Sign In</button>
+      </form>
+
+      <p class="muted">We&#39;ll look you up instantly. New guests are welcomed automatically.</p>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="year">2025</span> Desert Shine Detailing. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    (function() {
+      const LOGIN_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyUIXPQmX6RDVx--mLqpFcBmTvHu83OkiYaa_sXpF_-3VronnfcmFqVItJlyzOc8ahhQg/exec';
+      const form = document.getElementById('loginForm');
+      const phoneInput = document.getElementById('phone');
+      const toast = document.getElementById('toast');
+      const submitButton = form.querySelector('button[type="submit"]');
+      let toastTimer;
+      let redirectScheduled = false;
+
+      const showToast = (message, variant = 'success') => {
+        toast.textContent = message;
+        toast.classList.remove('visible', 'error');
+        if (variant === 'error') {
+          toast.classList.add('error');
+        } else {
+          toast.classList.remove('error');
+        }
+        // allow re-trigger animation
+        void toast.offsetWidth;
+        toast.classList.add('visible');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('visible'), 3200);
+      };
+
+      const setLoading = (isLoading) => {
+        if (isLoading) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Signing In...';
+        } else {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Sign In';
+        }
+      };
+
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const phone = phoneInput.value.trim();
+        if (phone.replace(/\D/g, '').length < 7) {
+          showToast('Enter a valid phone number to continue.', 'error');
+          return;
+        }
+
+        setLoading(true);
+
+        fetch(LOGIN_ENDPOINT, {
+          method: 'POST',
+          mode: 'cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'login', phone })
+        })
+          .then(res => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+          })
+          .then(data => {
+            const isReturning = Boolean(
+              (data && (data.status === 'found' || data.result === 'found')) ||
+              (data && typeof data.found === 'boolean' && data.found)
+            );
+            const memberName = (data && (data.name || data.customer || data.fullName)) || 'loyal guest';
+            const message = data && data.message
+              ? data.message
+              : (isReturning ? `Welcome back, ${memberName}!` : 'Account created successfully.');
+            showToast(message);
+
+            redirectScheduled = true;
+            setTimeout(() => {
+              window.location.href = 'loyalty.html';
+            }, 2000);
+          })
+          .catch(err => {
+            console.error(err);
+            showToast('Failed to connect: ' + err.message, 'error');
+            setLoading(false);
+          });
+      });
+    })();
+  </script>
+</body>
+</html>
