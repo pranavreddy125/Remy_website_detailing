@@ -142,6 +142,7 @@
   const pad = value => String(value).padStart(2,"0");
   let availabilityAbortController = null;
   let dropdownOpen = false;
+  let isSubmitting = false;
 
   const updateTimeValue = () => {
     if(!hourSelect.value || !minuteSelect.value){
@@ -160,6 +161,7 @@
   };
 
   const checkAvailabilityIfReady = () => {
+    if (isSubmitting) return;
     const hasTime = updateTimeValue();
     if (!dateField.value || !hasTime || !timeField.value) return;
 
@@ -286,6 +288,10 @@
   const bookingForm = document.getElementById("bookingForm");
   bookingForm.addEventListener("submit", e => {
     e.preventDefault();
+    isSubmitting = true;
+    if (availabilityAbortController) {
+      availabilityAbortController.abort();
+    }
     const hasValidTime = updateTimeValue();
 
     if (!hasValidTime) {
@@ -312,6 +318,7 @@
           showToast("That time is already taken — please choose another slot.");
         } else if (text.includes("confirmed")) {
           showSuccessScreen();
+          isSubmitting = false;
           showToast("Booking confirmed! We'll email your confirmation soon.");
         } else {
       showToast(text || "Booking received.");
