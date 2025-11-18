@@ -33,7 +33,7 @@
     </section>
 
     <section class="booking-form">
-      <form id="bookingForm">
+      <form id="bookingForm" data-inline-handler="true">
         <label for="name">Full Name:</label>
         <input type="text" id="name" name="name" required>
 
@@ -98,6 +98,21 @@
 
         <button type="submit">Book Appointment</button>
       </form>
+
+      <div id="bookingSuccess" class="booking-success" style="display:none;" aria-live="polite">
+        <div class="success-card">
+          <div class="success-icon" aria-hidden="true">
+            <span class="check-mark">✓</span>
+          </div>
+          <h2>Your appointment is confirmed!</h2>
+          <p>Thank you for booking with Desert Shine Detailing.</p>
+          <p>We’ll be in touch soon.</p>
+          <button type="button" id="waiverCta" class="success-btn" aria-label="Fill out waiver">
+            First time? Please fill out this waiver
+          </button>
+          <!-- Future: link this CTA to your waiver once available -->
+        </div>
+      </div>
     </section>
   </main>
 
@@ -122,7 +137,10 @@
   const timeInputWrapper = document.querySelector(".time-input-wrapper");
   const periodButtons = document.querySelectorAll(".ampm-toggle button");
   const calendarButton = document.querySelector(".calendar-btn");
+  const successSection = document.getElementById("bookingSuccess");
+  const waiverCta = document.getElementById("waiverCta");
   const pad = value => String(value).padStart(2,"0");
+  let availabilityAbortController = null;
   let dropdownOpen = false;
 
   const updateTimeValue = () => {
@@ -141,6 +159,37 @@
     return true;
   };
 
+  const checkAvailabilityIfReady = () => {
+    const hasTime = updateTimeValue();
+    if (!dateField.value || !hasTime || !timeField.value) return;
+
+    const params = new URLSearchParams({
+      action: "check",
+      date: dateField.value,
+      time: timeField.value
+    });
+
+    if (availabilityAbortController) {
+      availabilityAbortController.abort();
+    }
+    availabilityAbortController = new AbortController();
+
+    fetch(`${scriptURL}?${params.toString()}`, {
+      method: "GET",
+      signal: availabilityAbortController.signal
+    })
+      .then(res => res.text())
+      .then(text => {
+        if (text.toLowerCase().includes("unavailable")) {
+          showToast("That time is unavailable — please choose another slot.");
+        }
+      })
+      .catch(err => {
+        if (err.name === "AbortError") return;
+        console.error("Availability check failed", err);
+      });
+  };
+
   const setPeriod = (period) => {
     periodButtons.forEach(btn => {
       const isActive = btn.dataset.period === period;
@@ -149,6 +198,7 @@
     });
     timeField.dataset.period = period;
     updateTimeValue();
+    checkAvailabilityIfReady();
   };
 
   periodButtons.forEach(btn => {
@@ -175,10 +225,12 @@
   hourSelect.addEventListener("change", () => {
     updateTimeValue();
     if(hourSelect.value && minuteSelect.value) closeDropdowns();
+    checkAvailabilityIfReady();
   });
   minuteSelect.addEventListener("change", () => {
     updateTimeValue();
     if(hourSelect.value && minuteSelect.value) closeDropdowns();
+    checkAvailabilityIfReady();
   });
 
   document.addEventListener("click", event => {
@@ -190,6 +242,7 @@
   dateField.addEventListener("keydown", e => e.preventDefault());
   dateField.addEventListener("keypress", e => e.preventDefault());
   dateField.addEventListener("paste", e => e.preventDefault());
+  dateField.addEventListener("change", checkAvailabilityIfReady);
   if(calendarButton){
     calendarButton.addEventListener("click", () => {
       if(typeof dateField.showPicker === "function"){
@@ -200,10 +253,34 @@
     });
   }
   setPeriod("AM");
+
   const showToast = message => {
     toastEl.textContent = message;
     toastEl.classList.add("visible");
     setTimeout(() => toastEl.classList.remove("visible"), 3000);
+  };
+
+  const resetBookingUI = () => {
+    bookingForm.reset();
+    hourSelect.value = "";
+    minuteSelect.value = "";
+    timeDisplay.value = "";
+    timeField.value = "";
+    setPeriod("AM");
+    closeDropdowns();
+    bookingForm.style.display = "";
+    if (successSection) {
+      successSection.style.display = "none";
+      successSection.classList.remove("visible");
+    }
+  };
+
+  const showSuccessScreen = () => {
+    bookingForm.style.display = "none";
+    if (successSection) {
+      successSection.style.display = "block";
+      successSection.classList.add("visible");
+    }
   };
 
   const bookingForm = document.getElementById("bookingForm");
@@ -234,13 +311,16 @@
         if (text.includes("unavailable")) {
           showToast("That time is already taken — please choose another slot.");
         } else if (text.includes("confirmed")) {
+          showSuccessScreen();
           showToast("Booking confirmed! We'll email your confirmation soon.");
         } else {
-          showToast(text || "Booking received.");
-        }
-      })
-      .catch(() => showToast("Something went wrong. Please try again."));
-  });
+      showToast(text || "Booking received.");
+    }
+  })
+    .catch(() => showToast("Something went wrong. Please try again."));
+});
+
+// If you later link the waiver CTA to an external URL, set its href dynamically here.
   </script>
 </body>
 </html>

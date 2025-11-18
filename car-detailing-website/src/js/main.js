@@ -27,12 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   if (forms.booking) {
-    forms.booking.addEventListener('submit', e => {
-      e.preventDefault();
-      alert('Booking requested. We will confirm via email.');
-      forms.booking.reset();
-      location.href = 'index.html';
-    });
+    // Skip attaching demo handler when booking page has its own inline logic
+    if (!forms.booking.dataset.inlineHandler) {
+      forms.booking.addEventListener('submit', e => {
+        e.preventDefault();
+        alert('Booking requested. We will confirm via email.');
+        forms.booking.reset();
+        location.href = 'index.html';
+      });
+    }
   }
   if (forms.payment) {
     forms.payment.addEventListener('submit', e => {
