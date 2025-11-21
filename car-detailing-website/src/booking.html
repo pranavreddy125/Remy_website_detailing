@@ -33,13 +33,17 @@
     </section>
 
     <section class="booking-form">
-      <form id="bookingForm" data-inline-handler="true">
+      <div class="form-card">
+        <form id="bookingForm" data-inline-handler="true">
+        <p class="form-section-title">Contact Information</p>
         <label for="name">Full Name:</label>
         <input type="text" id="name" name="name" required>
 
         <label for="phone">Phone Number:</label>
         <input type="tel" id="phone" name="phone" required>
+        <div class="form-divider" aria-hidden="true"></div>
 
+        <p class="form-section-title">Service Details</p>
         <label for="service">Select Service:
           <a class="info-link" href="services.html" aria-label="View service details">i</a>
         </label>
@@ -49,11 +53,17 @@
           <option>Exterior Wash</option>
           <option>Full Detail</option>
         </select>
+        
 
+        <label for="notes">Notes (optional):</label>
+        <textarea id="notes" name="notes" rows="3"></textarea>
+        <div class="form-divider" aria-hidden="true"></div>
+
+        <p class="form-section-title">Schedule</p>
         <label for="date">Date:</label>
-        <div class="date-input-row">
+        <div class="date-picker" role="group">
           <input type="date" id="date" name="date" class="date-field" required inputmode="none">
-          <button type="button" class="calendar-btn" aria-label="Open calendar picker">Calendar</button>
+          <button type="button" class="calendar-btn" aria-label="Open calendar picker">Select Date</button>
         </div>
 
         <label>Preferred Time:</label>
@@ -93,11 +103,9 @@
           <input type="hidden" id="time" name="time">
         </div>
 
-        <label for="notes">Notes (optional):</label>
-        <textarea id="notes" name="notes" rows="3"></textarea>
-
-        <button type="submit">Book Appointment</button>
-      </form>
+        <button type="submit" class="booking-submit">Book Appointment</button>
+        </form>
+      </div>
 
       <div id="bookingSuccess" class="booking-success" style="display:none;" aria-live="polite">
         <div class="success-card">
@@ -212,11 +220,17 @@
     dropdownOpen = true;
     timeDropdowns.classList.add("visible");
     timeDropdowns.setAttribute("aria-hidden", "false");
+    if(timeInputWrapper){
+      timeInputWrapper.classList.add("active");
+    }
   };
   const closeDropdowns = () => {
     dropdownOpen = false;
     timeDropdowns.classList.remove("visible");
     timeDropdowns.setAttribute("aria-hidden", "true");
+    if(timeInputWrapper){
+      timeInputWrapper.classList.remove("active");
+    }
   };
 
   timeDisplay.addEventListener("focus", openDropdowns);
