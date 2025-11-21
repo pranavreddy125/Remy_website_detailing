@@ -97,7 +97,12 @@ body{
 
 /* Hero */
 .hero{position:relative}
-.hero-image{height:360px;background-size:cover;background-position:center;filter:brightness(.78)}
+.hero-image{
+  height:420px;
+  background-size:cover;
+  background-position:center 65%;
+  filter:brightness(.78);
+}
 .hero-content{position:relative;text-align:center;padding:40px 20px;margin-top:-120px;color:#fff}
 .hero-content h1{font-size:2.25rem;margin:0 0 8px;text-shadow:0 10px 30px rgba(0,0,0,0.45)}
 .hero-content .sub{opacity:.95;margin-bottom:18px}
@@ -179,6 +184,25 @@ body{
 .contact-form, .payment-form{background:var(--surface);color:var(--text);padding:20px;border-radius:12px;box-shadow:var(--shadow);border:1px solid var(--border)}
 .contact-form label, .payment-form label{display:block;font-size:.95rem;color:var(--text);margin-bottom:10px}
 .contact-form input, .contact-form textarea, .payment-form input, .booking-form input, .booking-form select{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:#050505;color:var(--text);margin-top:6px}
+.payment-card{text-align:center}
+.payment-card h2{margin-top:0;color:var(--accent)}
+.payment-list{
+  list-style:none;
+  padding:0;
+  margin:20px 0;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  font-size:1.05rem;
+  color:#f5f5f5;
+  font-weight:600;
+}
+.payment-list li{
+  padding:12px;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:8px;
+  background:#0b0b0b;
+}
 .booking-form{max-width:640px;margin:0 auto}
 .form-card{
   background:#111111;
