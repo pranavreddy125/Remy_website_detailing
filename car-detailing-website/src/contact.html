@@ -33,14 +33,21 @@
     </section>
 
     <section class="contact-grid">
-      <form id="contactForm" class="card contact-form">
-        <label>Name <input type="text" name="name" required></label>
-        <label>Email <input type="email" name="email" required></label>
-        <label>Message <textarea name="message" rows="5" required></textarea></label>
+      <form id="contactForm" class="contact-form gold-panel">
+        <p class="form-section-title">Contact Information</p>
+        <label for="contactName">Name</label>
+        <input id="contactName" type="text" name="name" required>
+
+        <label for="contactEmail">Email</label>
+        <input id="contactEmail" type="email" name="email" required>
+
+        <label for="contactMessage">Message</label>
+        <textarea id="contactMessage" name="message" rows="5" required></textarea>
+
         <button class="btn primary" type="submit">Send Message</button>
       </form>
 
-      <aside class="card contact-info">
+      <aside class="card contact-info gold-panel">
         <h3>Visit or Call</h3>
         <p>Arizona</p>
         <p>Phone: (555) 123-4567</p>
