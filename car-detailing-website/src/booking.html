@@ -107,7 +107,7 @@
         </form>
       </div>
 
-      <div id="bookingSuccess" class="booking-success" style="display:none;" aria-live="polite">
+      <div id="bookingSuccess" class="booking-success" style="display:none; margin-top: 40px;" aria-live="polite">
         <div class="success-card">
           <div class="success-icon" aria-hidden="true">
             <span class="check-mark">✓</span>
@@ -292,7 +292,14 @@
   };
 
   const showSuccessScreen = () => {
-    bookingForm.style.display = "none";
+    const formCard = document.querySelector(".form-card");
+    if (formCard) {
+      formCard.style.display = "none";
+    }
+    const pageHead = document.querySelector(".page-head");
+    if (pageHead) {
+      pageHead.style.display = "none";
+    }
     if (successSection) {
       successSection.style.display = "block";
       successSection.classList.add("visible");

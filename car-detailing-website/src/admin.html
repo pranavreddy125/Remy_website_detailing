@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard — Desert Shine Detailing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Desert Shine Detailing</a>
+
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span class="hamburger"></span>
+      </button>
+
+      <nav class="main-nav" aria-label="Primary navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="payment.html">Payment</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="booking.html">Booking</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-cta">
+        <a class="btn signin" href="login.html">Sign In</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <section class="page-head">
+      <h1>Admin Dashboard – Desert Shine Detailing</h1>
+      <p class="lead">Internal view for active bookings and customer loyalty controls.</p>
+    </section>
+
+    <section id="adminGate" hidden>
+      <div class="auth-card" style="max-width:520px;margin:0 auto;text-align:center;">
+        <h2>Admin access required.</h2>
+        <p class="muted">Use the admin code on the sign in page to continue.</p>
+        <div style="margin-top:14px;">
+          <a class="btn primary" href="login.html">Back to Login</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="adminContent" class="admin-stack" hidden style="display:flex;flex-direction:column;gap:22px;">
+      <section class="gold-panel">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <div>
+            <h2 style="margin:0;">Active Bookings</h2>
+            <p class="muted" style="margin-top:6px;">Review active appointments and mark them complete to trigger loyalty updates.</p>
+          </div>
+          <button class="btn signin" type="button" id="refreshBookings">Refresh</button>
+        </div>
+        <div id="bookingList" class="services-grid" style="margin-top:18px;"></div>
+        <p id="bookingEmpty" class="muted" style="margin-top:10px;"></p>
+      </section>
+
+      <section class="gold-panel">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <div>
+            <h2 style="margin:0;">Customer Management</h2>
+            <p class="muted" style="margin-top:6px;">Search guests by phone to reset loyalty or delete records.</p>
+          </div>
+        </div>
+
+        <form id="customerLookup" class="auth-form" autocomplete="off" style="max-width:640px;margin-top:10px;">
+          <label for="searchPhone">Search phone number…</label>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
+            <input id="searchPhone" name="phone" type="tel" placeholder="Search phone number…" required style="flex:1 1 260px;min-width:240px;">
+            <button type="submit" id="searchBtn">Search</button>
+          </div>
+        </form>
+
+        <div id="customerResult" class="card" style="margin-top:18px;display:none;">
+          <div id="customerFields"></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+            <button type="button" class="btn signin" id="resetLoyaltyBtn">Reset Loyalty</button>
+            <button type="button" class="btn primary" id="deleteCustomerBtn">Delete Customer</button>
+          </div>
+        </div>
+        <p id="customerPlaceholder" class="muted" style="margin-top:12px;">Search for a customer to see their profile.</p>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="year">2025</span> Desert Shine Detailing. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/main.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
