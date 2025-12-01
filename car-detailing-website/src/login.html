@@ -59,7 +59,7 @@
   <script src="js/main.js"></script>
   <script>
     (function() {
-      const LOGIN_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyUIXPQmX6RDVx--mLqpFcBmTvHu83OkiYaa_sXpF_-3VronnfcmFqVItJlyzOc8ahhQg/exec';
+      const LOGIN_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxYvyszKKA71dkx524GAaGVtxyZsARzx10OE_LWFlLBCMmW-3KOlyD2Mb__KThQZaUMcQ/exec';
       const form = document.getElementById('loginForm');
       const phoneInput = document.getElementById('phone');
       const toast = document.getElementById('toast');
@@ -114,8 +114,8 @@
         fetch(LOGIN_ENDPOINT, {
           method: 'POST',
           mode: 'cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'login', phone })
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `action=login&phone=${encodeURIComponent(phone)}`
         })
           .then(res => {
             if (!res.ok) throw new Error('Network response was not ok');
@@ -130,6 +130,10 @@
             const message = data && data.message
               ? data.message
               : (isReturning ? `Welcome back, ${memberName}!` : 'Account created successfully.');
+            if (data) {
+              sessionStorage.setItem('userPhone', data.phone || phone);
+              sessionStorage.setItem('userName', memberName);
+            }
             showToast(message);
 
             redirectScheduled = true;
