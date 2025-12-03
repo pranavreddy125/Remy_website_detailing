@@ -1,5 +1,5 @@
 (() => {
-  const ENDPOINT = "https://script.google.com/macros/s/AKfycbxYvyszKKA71dkx524GAaGVtxyZsARzx10OE_LWFlLBCNmW-3KOlyD2Mb__KThQZaUMcQ/exec";
+  const ENDPOINT = "https://script.google.com/macros/s/AKfycbxYvyszKKA71dkx524GAaGVtxyZsARzx10OE_LWFlLBCMmW-3KOlyD2Mb__KThQZaUMcQ/exec";
   const ADMIN_FLAG = "dsdAdminAccess";
 
   const els = {
@@ -178,7 +178,7 @@
     if (els.bookingEmpty) els.bookingEmpty.textContent = "Loading bookings...";
     if (els.bookingList) els.bookingList.innerHTML = "";
     try {
-      const data = await request("getbookings");
+      const data = await request("getBookings");
       const bookings = parseBookings(data);
       renderBookings(bookings);
     } catch (err) {
