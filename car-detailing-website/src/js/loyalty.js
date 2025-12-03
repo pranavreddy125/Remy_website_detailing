@@ -39,8 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (visitEl) {
       visitEl.textContent = `${visits}/4`;
     }
-    if (visits >= 4 && rewardEl) {
-      rewardEl.classList.add('visible');
+    if (rewardEl) {
+      if (visits >= 4) {
+        rewardEl.textContent = 'Free detail unlocked!';
+        rewardEl.classList.add('visible');
+      } else {
+        rewardEl.classList.remove('visible');
+      }
     }
   };
 

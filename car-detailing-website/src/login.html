@@ -24,6 +24,7 @@
           <li><a href="services.html">Services</a></li>
           <li><a href="booking.html">Booking</a></li>
           <li><a href="about.html">About Us</a></li>
+          <li><a href="login.html">Sign In</a></li>
         </ul>
       </nav>
 
@@ -39,8 +40,8 @@
       <p class="muted">Unlock loyalty rewards, saved vehicles, and faster booking with your mobile number.</p>
 
       <form id="loginForm" class="auth-form" autocomplete="tel">
-        <label for="phone">Phone Number</label>
-        <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. (555) 123-4567" required>
+        <label for="phoneInput">Phone Number</label>
+        <input id="phoneInput" name="phone" type="text" autocomplete="off" placeholder="e.g. (555) 123-4567" required>
         <button type="submit">Sign In</button>
       </form>
 
@@ -57,97 +58,6 @@
   </footer>
 
   <script src="js/main.js"></script>
-  <script>
-    (function() {
-      const LOGIN_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxYvyszKKA71dkx524GAaGVtxyZsARzx10OE_LWFlLBCMmW-3KOlyD2Mb__KThQZaUMcQ/exec';
-      const form = document.getElementById('loginForm');
-      const phoneInput = document.getElementById('phone');
-      const toast = document.getElementById('toast');
-      const submitButton = form.querySelector('button[type="submit"]');
-      let toastTimer;
-      let redirectScheduled = false;
-
-      const showToast = (message, variant = 'success') => {
-        toast.textContent = message;
-        toast.classList.remove('visible', 'error');
-        if (variant === 'error') {
-          toast.classList.add('error');
-        } else {
-          toast.classList.remove('error');
-        }
-        // allow re-trigger animation
-        void toast.offsetWidth;
-        toast.classList.add('visible');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.remove('visible'), 3200);
-      };
-
-      const setLoading = (isLoading) => {
-        if (isLoading) {
-          submitButton.disabled = true;
-          submitButton.textContent = 'Signing In...';
-        } else {
-          submitButton.disabled = false;
-          submitButton.textContent = 'Sign In';
-        }
-      };
-
-      form.addEventListener('submit', async event => {
-        event.preventDefault();
-        const phone = phoneInput.value.trim();
-        // Admin secret login bypass
-        if (phone === "desertadmin!!") {
-          showToast("Admin access granted.");
-          redirectScheduled = true;
-          setTimeout(() => {
-            window.location.href = 'admin.html';
-          }, 1200);
-          return;
-        }
-        if (phone.replace(/\D/g, '').length < 7) {
-          showToast('Enter a valid phone number to continue.', 'error');
-          return;
-        }
-
-        setLoading(true);
-
-        fetch(LOGIN_ENDPOINT, {
-          method: 'POST',
-          mode: 'cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: `action=login&phone=${encodeURIComponent(phone)}`
-        })
-          .then(res => {
-            if (!res.ok) throw new Error('Network response was not ok');
-            return res.json();
-          })
-          .then(data => {
-            const isReturning = Boolean(
-              (data && (data.status === 'found' || data.result === 'found')) ||
-              (data && typeof data.found === 'boolean' && data.found)
-            );
-            const memberName = (data && (data.name || data.customer || data.fullName)) || 'loyal guest';
-            const message = data && data.message
-              ? data.message
-              : (isReturning ? `Welcome back, ${memberName}!` : 'Account created successfully.');
-            if (data) {
-              sessionStorage.setItem('userPhone', data.phone || phone);
-              sessionStorage.setItem('userName', memberName);
-            }
-            showToast(message);
-
-            redirectScheduled = true;
-            setTimeout(() => {
-              window.location.href = 'loyalty.html';
-            }, 2000);
-          })
-          .catch(err => {
-            console.error(err);
-            showToast('Failed to connect: ' + err.message, 'error');
-            setLoading(false);
-          });
-      });
-    })();
-  </script>
+  <script src="js/login.js"></script>
 </body>
 </html>

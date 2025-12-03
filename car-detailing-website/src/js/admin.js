@@ -1,5 +1,5 @@
 (() => {
-  const ENDPOINT = "https://script.google.com/macros/s/AKfycbyUIXPQmX6RDVx--mLqpFcBmTvHu83OkiYaa_sXpF_-3VronnfcmFqVItJlyzOc8ahhQg/exec";
+  const ENDPOINT = "https://script.google.com/macros/s/AKfycbxYvyszKKA71dkx524GAaGVtxyZsARzx10OE_LWFlLBCNmW-3KOlyD2Mb__KThQZaUMcQ/exec";
   const ADMIN_FLAG = "dsdAdminAccess";
 
   const els = {
@@ -8,6 +8,7 @@
     bookingList: document.getElementById("bookingList"),
     bookingEmpty: document.getElementById("bookingEmpty"),
     refreshBookingsBtn: document.getElementById("refreshBookings"),
+    completeBtnTemplate: document.getElementById("bookingCompleteButtonTemplate"),
     toast: document.getElementById("toast"),
     searchForm: document.getElementById("customerLookup"),
     searchInput: document.getElementById("searchPhone"),
@@ -53,10 +54,18 @@
   };
 
   const request = async (action, payload = {}) => {
+    const params = new URLSearchParams();
+    params.append("action", action);
+    Object.entries(payload).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        params.append(key, value);
+      }
+    });
     const res = await fetch(ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action, ...payload })
+      mode: "cors",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params.toString()
     });
     if (!res.ok) {
       throw new Error(`Request failed (${res.status})`);
@@ -87,6 +96,26 @@
     valueEl.textContent = value || "—";
     p.append(labelEl, valueEl);
     return p;
+  };
+
+  const completeBooking = (phone) => {
+    if (!phone) {
+      showToast("Missing phone number for this booking.", "error");
+      return;
+    }
+    request("completeBooking", { phone })
+      .then(data => {
+        if (data.status === "ok") {
+          showToast("Booking completed!");
+          loadBookings();
+        } else {
+          showToast(`Error: ${data.message || "Unable to complete booking"}`, "error");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        showToast("Failed to connect to server", "error");
+      });
   };
 
   const renderBookings = (bookings) => {
@@ -131,11 +160,13 @@
       actions.style.flexWrap = "wrap";
       actions.style.marginTop = "12px";
 
-      const completeBtn = document.createElement("button");
+      const completeBtn = els.completeBtnTemplate
+        ? els.completeBtnTemplate.content.firstElementChild.cloneNode(true)
+        : document.createElement("button");
       completeBtn.type = "button";
-      completeBtn.className = "btn signin";
-      completeBtn.textContent = "Mark Completed";
-      completeBtn.addEventListener("click", () => markCompleted(phone, card, completeBtn));
+      completeBtn.className = completeBtn.className || "btn signin";
+      completeBtn.textContent = "Complete";
+      completeBtn.addEventListener("click", () => completeBooking(phone));
 
       actions.appendChild(completeBtn);
       card.appendChild(actions);
@@ -147,7 +178,7 @@
     if (els.bookingEmpty) els.bookingEmpty.textContent = "Loading bookings...";
     if (els.bookingList) els.bookingList.innerHTML = "";
     try {
-      const data = await request("getBookings");
+      const data = await request("getbookings");
       const bookings = parseBookings(data);
       renderBookings(bookings);
     } catch (err) {
@@ -288,6 +319,8 @@
       els.deleteBtn.addEventListener("click", () => handleCustomerAction("deleteCustomer", "Customer deleted."));
     }
   };
+
+  window.completeBooking = completeBooking;
 
   document.addEventListener("DOMContentLoaded", () => {
     if (!ensureAdminAccess()) return;
