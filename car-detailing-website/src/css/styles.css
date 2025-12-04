@@ -87,6 +87,8 @@ body{
 .btn.primary:hover{background:var(--accent-dark);transform:translateY(-3px);color:#000}
 .btn.signin{background:transparent;color:var(--accent);border:1px solid var(--border);padding:8px 12px}
 .btn.signin:hover{background:rgba(212,175,55,0.12)}
+#deleteCustomerBtn{background:#c73833;color:#fff;border-color:#c73833}
+#deleteCustomerBtn:hover{background:#aa2d2b;color:#fff}
 
 /* Hamburger (mobile) */
 .nav-toggle{display:none;background:none;border:0;padding:8px;cursor:pointer}

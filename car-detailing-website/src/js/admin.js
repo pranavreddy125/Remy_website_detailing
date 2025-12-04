@@ -61,6 +61,7 @@
         params.append(key, value);
       }
     });
+    console.log("INCOMING ACTION:", action, "PHONE:", payload.phone);
     const res = await fetch(ENDPOINT, {
       method: "POST",
       mode: "cors",
@@ -281,6 +282,19 @@
   };
 
   const attachEvents = () => {
+    if (els.searchInput) {
+      els.searchInput.addEventListener("input", () => {
+        let v = els.searchInput.value.replace(/\D/g, "");
+        if (v.length > 3 && v.length <= 6) {
+          els.searchInput.value = `(${v.slice(0, 3)}) ${v.slice(3)}`;
+        } else if (v.length > 6) {
+          els.searchInput.value = `(${v.slice(0, 3)}) ${v.slice(3, 6)}-${v.slice(6, 10)}`;
+        } else {
+          els.searchInput.value = v;
+        }
+      });
+    }
+
     if (els.refreshBookingsBtn) {
       els.refreshBookingsBtn.addEventListener("click", loadBookings);
     }
