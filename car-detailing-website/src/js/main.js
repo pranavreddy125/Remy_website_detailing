@@ -109,4 +109,53 @@ document.addEventListener('DOMContentLoaded', () => {
       }, true);
     }
   }
+
+  // Service modal (services page)
+  const serviceModal = document.getElementById('serviceModal');
+  if (serviceModal) {
+    const modalTitle = document.getElementById('modalServiceTitle');
+    const modalPrice = document.getElementById('modalServicePrice');
+    const modalBody = document.getElementById('modalServiceBody');
+    const closeBtn = serviceModal.querySelector('.modal-close');
+    const bubbles = document.querySelectorAll('.service-bubble');
+
+    const closeModal = () => {
+      serviceModal.classList.remove('open');
+      serviceModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+    };
+
+    const openModal = card => {
+      const title = card.dataset.title || card.querySelector('.bubble-title')?.textContent || 'Service';
+      const price = card.dataset.price || card.querySelector('.bubble-price')?.textContent || '';
+      const detail = card.querySelector('.bubble-detail');
+      modalTitle.textContent = title;
+      modalPrice.textContent = price;
+      modalBody.innerHTML = detail ? detail.innerHTML : '';
+      serviceModal.classList.add('open');
+      serviceModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+      closeBtn?.focus({ preventScroll: true });
+    };
+
+    bubbles.forEach(card => {
+      card.addEventListener('click', () => openModal(card));
+      card.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openModal(card);
+        }
+      });
+    });
+
+    closeBtn?.addEventListener('click', closeModal);
+    serviceModal.addEventListener('click', event => {
+      if (event.target === serviceModal) closeModal();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && serviceModal.classList.contains('open')) {
+        closeModal();
+      }
+    });
+  }
 });

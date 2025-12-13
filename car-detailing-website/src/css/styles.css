@@ -734,12 +734,242 @@ body{
   font-size: 0.95rem;
 }
 
+/* Service cards + modal */
+.bubble-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 22px;
+}
+
+.service-bubble {
+  position: relative;
+  min-height: 260px;
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(255, 210, 120, 0.14), rgba(255, 210, 120, 0) 38%),
+    rgba(12, 12, 12, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+  cursor: pointer;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  text-align: left;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+}
+
+.service-bubble:hover,
+.service-bubble:focus-visible {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 44px rgba(0,0,0,0.6);
+  border-color: rgba(255, 210, 120, 0.6);
+  background:
+    linear-gradient(135deg, rgba(255, 210, 120, 0.18), rgba(255, 210, 120, 0) 42%),
+    rgba(14, 14, 14, 0.96);
+}
+
+.service-bubble:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.bubble-inner {
+  position: relative;
+  width: 100%;
+  padding: 22px 22px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bubble-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  transition: opacity 0.24s ease, transform 0.24s ease;
+  z-index: 1;
+}
+
+.bubble-title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.bubble-price {
+  margin: 0;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.bubble-hover {
+  position: absolute;
+  inset: 0;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(0,0,0,0.96), rgba(14,14,14,0.9));
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  transition: opacity 0.24s ease, transform 0.24s ease;
+  pointer-events: auto;
+}
+
+.bubble-hover .bubble-detail {
+  max-height: 100%;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.bubble-hover .service-desc {
+  margin: 0 0 6px;
+  color: #f7f7f7;
+  font-weight: 600;
+}
+
+.bubble-hover .service-list {
+  gap: 4px;
+}
+
+.bubble-hover .price-line {
+  margin-top: 8px;
+}
+
+.bubble-cta {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(255, 210, 120, 0.35);
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(255, 210, 120, 0.08);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+}
+
+.service-bubble:hover .bubble-hover,
+.service-bubble:focus-within .bubble-hover {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.service-bubble:hover .bubble-summary,
+.service-bubble:focus-within .bubble-summary {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.service-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 240;
+}
+
+.service-modal.open {
+  display: flex;
+}
+
+.service-modal__dialog {
+  width: min(660px, 94vw);
+  max-height: 90vh;
+  background: #0c0c0c;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 210, 120, 0.55);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 0 8px rgba(212, 175, 55, 0.08);
+  overflow: hidden;
+  position: relative;
+  transform: translateY(14px) scale(0.97);
+  opacity: 0;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.service-modal.open .service-modal__dialog {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.modal-close:hover,
+.modal-close:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.03);
+  border-color: rgba(255, 255, 255, 0.4);
+  outline: none;
+}
+
+.modal-header {
+  padding: 18px 22px 12px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.modal-header h2 {
+  margin: 0 0 6px;
+}
+
+.modal-price {
+  margin: 0;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.modal-body {
+  padding: 16px 24px 22px;
+  overflow: auto;
+  max-height: calc(90vh - 120px);
+}
+
+.modal-body .service-desc {
+  margin-top: 0;
+}
+
+.modal-body .service-list {
+  gap: 6px;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
 @media (max-width: 640px) {
-  .service.card {
-    padding: 14px 14px 12px;
+  .bubble-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
-  .service.card h3,
-  .service.card h4 {
-    font-size: 1rem;
+  .service-bubble {
+    min-height: 220px;
+    border-radius: 16px;
+  }
+  .bubble-inner {
+    padding: 18px 18px 16px;
+  }
+  .bubble-hover {
+    border-radius: 14px;
+    transform: translateY(12px) scale(0.99);
   }
 }
